@@ -1,5 +1,5 @@
-public class Node {
+class Node{
     int value;
     Node next;
-
 }
+

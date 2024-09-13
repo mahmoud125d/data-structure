@@ -1,7 +1,6 @@
-public class LinkedList {
-    static int counter = 0;
+class LinkedList {
     Node head;
-
+    private static int size=0;
     public LinkedList() {
         head = null;
     }
@@ -11,7 +10,7 @@ public class LinkedList {
     }
 
     public void insertFirst(int value) {
-        counter++;
+        size++;
         Node newNode = new Node();
         newNode.value = value;
         if (isEmpty()) {
@@ -22,60 +21,111 @@ public class LinkedList {
             head = newNode;
         }
     }
-
-    public void insertBefore(int value, int element) {
-        if (isFound(element)) {
-            counter++;
-            Node temp = head;
+    public void insertBefore(int value,int element){
+        size++;
+        if(isFound(element)){
             Node newNode = new Node();
             newNode.value = value;
-            while (temp != null && temp.next.value != element) {
-                temp = temp.next;
+            Node temp = head;
+
+            if (head.value == element) {
+                newNode.next = head;
+                head = newNode;
+                return;
+            }
+
+            while(temp.next.value != element){
+                temp=temp.next;
             }
             newNode.next = temp.next;
             temp.next = newNode;
+        }else{
+            System.out.println("element not found");
         }
 
     }
     public void append(int value){
-        counter++;
-        Node temp = head;
+        size++;
         Node newNode = new Node();
-        newNode.value =value;
+        Node temp = head;
+        if(isEmpty()){
+            newNode.next=null;
+            head=newNode;
+            newNode.value=value;
+            return;
+        }
+
         while (temp.next != null) {
             temp = temp.next;
         }
-        temp.next = newNode;
-        newNode.next = null;
+        newNode.next=null;
+        temp.next=newNode;
+        newNode.value=value;
     }
     public void delete(int value){
-        if(value == head.value){
-            head = head.next;
+        size--;
+        Node temp = head;
+        Node prev = null;
+        if(isFound(value)){
+            if(value == head.value){
+                deleteFirst();
+            }
+            while(temp.value!=value){
+                prev=temp;
+                temp=temp.next;
+            }
+            prev.next=temp.next;
+
+
         }else{
+            System.out.println("element not found");
+        }
+    }
+    public void deleteAll(int value){
+        
+        while(isFound(value)){
             Node temp = head;
             Node prev = null;
+            if(isFound(value)){
+                if(value == head.value){
+                    head=head.next;
+                    return;
+                }
+                while(temp.value!=value){
+                    prev=temp;
+                    temp=temp.next;
+                }
+                prev.next=temp.next;
 
-            while (temp.value != value) {
-                prev = temp;
-                temp = temp.next;
+
+            }else{
+                System.out.println("element not found");
             }
-            prev.next = temp.next;
+            size--;
         }
+    }
+    public void deleteFirst(){
+        size--;
+        head=head.next;
+    }
+    public void deleteLast(){
+        size--;
+        Node temp = head;
+            while(temp.next.next!=null){
+
+                temp=temp.next;
+            }
+            temp.next=null;
+
+
     }
 
-    public void display() {
+    public boolean isFound(int value){
         Node temp = head;
+        boolean isFound=false;
         while (temp != null) {
-            System.out.println(temp.value);
-            temp = temp.next;
-        }
-    }
-    public boolean isFound(int value) {
-        Node temp = head;
-        boolean isFound = false;
-        while (temp != null) {
-            if (value == temp.value) {
-                isFound = true;
+            if(value == temp.value){
+                isFound= true;
                 break;
             }
             temp = temp.next;
@@ -83,16 +133,14 @@ public class LinkedList {
         return isFound;
     }
 
-    public String toString() {
+    public int getSize(){
+        return size;
+    }
+    public void display() {
         Node temp = head;
         while (temp != null) {
             System.out.println(temp.value);
             temp = temp.next;
         }
-        return "";
-    }
-
-    public int count() {
-        return counter;
     }
 }
